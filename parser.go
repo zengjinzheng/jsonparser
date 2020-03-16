@@ -98,9 +98,16 @@ func findKeyStart(data []byte, key string) (int, error) {
 			}
 
 		case '[':
-			i = blockEnd(data[i:], data[i], ']') + i
+			ret = blockEnd(data[i:], data[i], ']')
+			if ret != -1 {
+				i = i + ret
+			}
+
 		case '{':
-			i = blockEnd(data[i:], data[i], '}') + i
+			ret = blockEnd(data[i:], data[i], '}')
+			if ret != -1 {
+				ret = i + ret
+			}	
 		}
 		i++
 	}
