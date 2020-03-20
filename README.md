@@ -31,7 +31,7 @@ data := []byte(`{
       "followers": 109
     },
     "avatars": [
-      { "url": "https://avatars1.githubusercontent.com/u/14009?v=3&s=460", "type": "thumbnail" }
+      { "url": "https://avatars1.githubusercontent.com/u/14009?v=3&s=460", "type": "thumbnail", "num": 12345 }
     ]
   },
   "company": {
@@ -61,7 +61,7 @@ jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, off
 }, "person", "avatars")
 
 // Or use can access fields by index!
-jsonparser.GetInt("person", "avatars", "[0]", "url")
+jsonparser.GetInt(data, "person", "avatars", "[0]", "num")
 
 // You can use `ObjectEach` helper to iterate objects { "key1":object1, "key2":object2, .... "keyN":objectN }
 jsonparser.ObjectEach(data, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
