@@ -1,5 +1,7 @@
 module benchmarks
 
+go 1.14
+
 require (
 	github.com/Jeffail/gabs v1.2.0
 	github.com/a8m/djson v0.0.0-20170509170705-c02c5aef757f

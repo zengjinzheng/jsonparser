@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	_ "fmt"
+	. "github.com/stretchr/testify/require"
 	"reflect"
 	"testing"
 )
@@ -1928,4 +1929,26 @@ func TestParseString(t *testing.T) {
 			return obtained.(string) == expected, expected
 		},
 	)
+}
+
+func TestIssues199(t *testing.T) {
+	should := New(t)
+	jsonObject := `[{"key1":"Foo","key2":"Bar","key3":"baz"},{"key1":"boo","key2":"dog","key3":"cat","key4":"mouse"}]`
+	var allSlices [][]byte
+	_, err := ArrayEach([]byte(jsonObject), func(value []byte, _ ValueType, _ int, err error) {
+		if err != nil {
+			t.Fatalf("failed: %s", err)
+		}
+		allSlices = append(allSlices, value)
+	})
+
+	if err != nil {
+		t.Fatalf("failed: %s", err)
+	}
+
+	newVal, err := Set(allSlices[0], []byte(`"mouse"`), "key4")
+	should.Nil(err)
+	should.Equal([]byte(`{"key1":"Foo","key2":"Bar","key3":"baz","key4":"mouse"}`),newVal)
+	should.Equal([]byte(`{"key1":"boo","key2":"dog","key3":"cat","key4":"mouse"}`),allSlices[1])
+
 }
